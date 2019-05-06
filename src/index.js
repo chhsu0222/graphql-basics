@@ -20,20 +20,23 @@ const users = [{
 }]
 
 const posts = [{
-    id: '1',
+    id: '11',
     title: 'What a day',
     body: 'It is a good day.',
-    published: true
+    published: true,
+    author: '1'
 }, {
-    id: '2',
+    id: '12',
     title: 'GraphQL',
     body: 'Still work on it...',
-    published: false
+    published: false,
+    author: '1'
 }, {
-    id: '3',
+    id: '13',
     title: 'Golang',
     body: 'I need to spend more time on it!',
-    published: false
+    published: false,
+    author: '2'
 }]
 
 // Type definitions (schema)
@@ -57,6 +60,7 @@ const typeDefs = `
         title: String!
         body: String!
         published: Boolean!
+        author: User!
     }
 `
 
@@ -98,6 +102,15 @@ const resolvers = {
                 body: 'It is a good day.',
                 published: true
             }
+        }
+    },
+    Post: {
+        author(parent, args, ctx, info) {
+            // This method will be called if we ask for 'author' of a post.
+            // The 'post' information lives right here on the 'parent' argument.
+            return users.find((user) => {
+                return user.id === parent.author
+            })
         }
     }
 }
