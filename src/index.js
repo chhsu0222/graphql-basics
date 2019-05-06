@@ -39,11 +39,26 @@ const posts = [{
     author: '2'
 }]
 
+const comments = [{
+    id: '21',
+    text: 'Awesome!'
+}, {
+    id: '22',
+    text: 'It is great!'
+}, {
+    id: '23',
+    text: 'Good job.'
+}, {
+    id: '24',
+    text: 'Nice work!'
+},]
+
 // Type definitions (schema)
 const typeDefs = `
     type Query {
         users(query: String): [User!]!
         posts(query: String): [Post!]!
+        comments: [Comment!]!
         me: User!
         post: Post!
     }
@@ -62,6 +77,11 @@ const typeDefs = `
         body: String!
         published: Boolean!
         author: User!
+    }
+
+    type Comment {
+        id: ID!
+        text: String!
     }
 `
 
@@ -87,6 +107,9 @@ const resolvers = {
             return posts.filter((post) => {
                 return post.title.toLowerCase().includes(query) || post.body.toLowerCase().includes(query)
             })
+        },
+        comments(parent, args, ctx, info) {
+            return comments
         },
         me() {
             return {
